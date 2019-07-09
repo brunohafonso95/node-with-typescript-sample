@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var newsController_1 = require("../controllers/newsController");
+var token_1 = require("../middlewares/token");
+var localUpload_1 = require("../middlewares/localUpload");
+var express_1 = require("express");
+var router = express_1.Router();
+router.route('/api/v1/news').get(newsController_1.default.get);
+router.route('/api/v1/news/:id').get(token_1.default.middleware, newsController_1.default.getById);
+router.route('/api/v1/news').post(token_1.default.middleware, newsController_1.default.create);
+router.route('/api/v1/news/:id').put(token_1.default.middleware, newsController_1.default.update);
+router.route('/api/v1/news/:id').delete(token_1.default.middleware, newsController_1.default.delete);
+router.route('/api/v1/news/export/csv').get(token_1.default.middleware, newsController_1.default.exportCsv);
+router.route('/api/v1/news/upload').post(localUpload_1.default.single('file'), token_1.default.middleware, function (req, res) { return res.json({ message: 'upload file with success' }); });
+exports.default = router;
